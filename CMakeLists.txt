@@ -1,0 +1,60 @@
+cmake_minimum_required(VERSION 3.13)
+
+project(Onions)
+
+find_package(gtest REQUIRED)
+find_package(google-benchmark REQUIRED)
+
+add_library(${PROJECT_NAME} INTERFACE)
+add_library(challenges::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+target_include_directories(${PROJECT_NAME} INTERFACE src/)
+target_sources(${PROJECT_NAME} INTERFACE
+    src/Level_0.hpp)
+
+######################################################################
+option(BUILD_REFERENCE "Will build a reference implementation as a library, 
+                        which will also be tested and benchmarked. Cool for comparison." ON)
+if(BUILD_REFERENCE)
+    add_library(${PROJECT_NAME}_Reference INTERFACE)
+    add_library(challenges::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
+    target_include_directories(${PROJECT_NAME} INTERFACE src/reference/)
+    target_sources(${PROJECT_NAME}_Reference INTERFACE
+        src/reference/Reference_Level_0.hpp)
+    target_compile_definitions(${PROJECT_NAME}_Reference INTERFACE BUILD_REFERENCE) # We will use this for an ifdef
+endif()
+
+######################################################################
+option(BUILD_TESTS "Will build the tests verifying your result" ON)
+if( BUILD_TESTS)
+    add_executable(${PROJECT_NAME}_Tests)
+    target_sources(${PROJECT_NAME}_Tests PRIVATE 
+        src/tests/main.cpp)
+    target_link_libraries(${PROJECT_NAME}_Tests PRIVATE
+        challenges::${PROJECT_NAME}
+        gtest::gtest
+        $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
+
+    enable_testing()
+    include(GoogleTest)
+    gtest_discover_tests(${PROJECT_NAME}_Tests)
+endif()
+
+######################################################################
+option(BUILD_BENCHMARK "This will enable the performance tests using google benchmark" ON)
+if( BUILD_BENCHMARK)
+    # Requires PThreads on Linux
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+
+    add_executable(${PROJECT_NAME}_Benchmark)
+    target_sources(${PROJECT_NAME}_Benchmark PRIVATE 
+        src/benchmark/main.cpp)
+    target_link_libraries(${PROJECT_NAME}_Benchmark PRIVATE
+        challenges::${PROJECT_NAME}
+        google-benchmark::google-benchmark
+        Threads::Threads
+        $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
+
+    add_test(NAME ${PROJECT_NAME}_RunBenchmark COMMAND ${PROJECT_NAME}_Benchmark)
+endif()
