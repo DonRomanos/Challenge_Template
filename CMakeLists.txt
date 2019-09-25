@@ -6,7 +6,7 @@ find_package(gtest REQUIRED)
 find_package(google-benchmark REQUIRED)
 
 add_library(${PROJECT_NAME} INTERFACE)
-add_library(challenges::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(onions::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} INTERFACE src/)
 target_sources(${PROJECT_NAME} INTERFACE
@@ -17,7 +17,7 @@ option(BUILD_REFERENCE "Will build a reference implementation as a library,
                         which will also be tested and benchmarked. Cool for comparison." ON)
 if(BUILD_REFERENCE)
     add_library(${PROJECT_NAME}_Reference INTERFACE)
-    add_library(challenges::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
+    add_library(onions::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
     target_include_directories(${PROJECT_NAME} INTERFACE src/reference/)
     target_sources(${PROJECT_NAME}_Reference INTERFACE
         src/reference/Reference_Level_0.hpp)
@@ -34,7 +34,7 @@ if( BUILD_TESTS)
     target_include_directories(${PROJECT_NAME}_Tests PRIVATE
         src/tests)
     target_link_libraries(${PROJECT_NAME}_Tests PRIVATE
-        challenges::${PROJECT_NAME}
+        onions::${PROJECT_NAME}
         gtest::gtest
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
 
@@ -52,12 +52,17 @@ if( BUILD_BENCHMARK)
 
     add_executable(${PROJECT_NAME}_Benchmark)
     target_sources(${PROJECT_NAME}_Benchmark PRIVATE 
-        src/benchmark/main.cpp)
+        src/benchmark/main.cpp
+        src/benchmark/Level_0_benchmark.hpp)
+    target_include_directories(${PROJECT_NAME}_Benchmark PRIVATE
+        src/benchmark)
     target_link_libraries(${PROJECT_NAME}_Benchmark PRIVATE
-        challenges::${PROJECT_NAME}
+        onions::${PROJECT_NAME}
         google-benchmark::google-benchmark
         Threads::Threads
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
 
-    add_test(NAME ${PROJECT_NAME}_RunBenchmark COMMAND ${PROJECT_NAME}_Benchmark)
+    add_custom_target(NAME ${PROJECT_NAME}_Benchmark
+        COMMAND ${PROJECT_NAME}_Benchmark
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
