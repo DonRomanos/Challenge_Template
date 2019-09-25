@@ -1,8 +1,8 @@
-#include "gtest/gtest.h"
+#include "Level_0_tests.hpp"
 
 TEST(GtestDependency, Should_Compile_if_gtest_was_found)
 {
-    ASSERT_TRUE(true);
+    SUCCEED();
 }
 
 // Had some Problems with the conan cmake_find_package generator, 

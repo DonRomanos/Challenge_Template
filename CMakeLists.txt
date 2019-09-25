@@ -29,7 +29,10 @@ option(BUILD_TESTS "Will build the tests verifying your result" ON)
 if( BUILD_TESTS)
     add_executable(${PROJECT_NAME}_Tests)
     target_sources(${PROJECT_NAME}_Tests PRIVATE 
-        src/tests/main.cpp)
+        src/tests/main.cpp
+        src/tests/Level_0_tests.hpp)
+    target_include_directories(${PROJECT_NAME}_Tests PRIVATE
+        src/tests)
     target_link_libraries(${PROJECT_NAME}_Tests PRIVATE
         challenges::${PROJECT_NAME}
         gtest::gtest
