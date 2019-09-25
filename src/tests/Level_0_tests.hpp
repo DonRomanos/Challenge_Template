@@ -2,7 +2,7 @@
 
 #include "Level_0.hpp"
 #ifdef BUILD_REFERENCE
-    #include "Reference_Level_0.hpp"
+    #include "Level_0_Reference.hpp"
 #endif
 
 #include "gtest/gtest.h"
@@ -15,15 +15,15 @@ class Level_0_Tests : public ::testing::Test
 TYPED_TEST_CASE_P(Level_0_Tests);
 
 /***************************************************************/
-TYPED_TEST_P(Level_0_Tests, Should_Fail) {
+TYPED_TEST_P(Level_0_Tests, Should_Succeed) {
   // Inside a test, refer to TypeParam to get the type parameter.
   // TypeParam n = 0;
-  FAIL();
+  SUCCEED();
 }
 
-// Register all test names, e.g. Should_Fail
+// Register all test names, e.g. Should_Succeed
 REGISTER_TYPED_TEST_CASE_P(Level_0_Tests,
-                            Should_Fail);
+                            Should_Succeed);
 
 // Now we can instantiate it with our types.
 #ifdef BUILD_REFERENCE

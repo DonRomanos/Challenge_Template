@@ -2,7 +2,7 @@
 
 #include "Level_0.hpp"
 #ifdef BUILD_REFERENCE
-    #include "Reference_Level_0.hpp"
+    #include "Level_0_Reference.hpp"
 #endif
 #include "benchmark/benchmark.h"
 
