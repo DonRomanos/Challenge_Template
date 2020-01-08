@@ -22,8 +22,7 @@ For more Infos see: https://docs.conan.io/en/latest/reference/profiles.html
 
 Installing the Libraries using Conan
 ```
-// I could not find google benchmark on the official conan-center so I'm using this one from Mateusz Pusz, thank you :) 
-conan remote add conan-mpusz https://api.bintray.com/conan/mpusz/conan-mpusz
+// Good news google benchmark is now on conan-center :)
 mkdir build && cd build
 conan install .. --build missing
 conan build ..

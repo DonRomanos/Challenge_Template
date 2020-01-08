@@ -44,7 +44,7 @@ endif()
 ######################################################################
 option(BUILD_BENCHMARK "This will enable the performance tests using google benchmark" ON)
 if( BUILD_BENCHMARK)
-    find_package(google-benchmark REQUIRED)
+    find_package(benchmark REQUIRED)
     # Requires PThreads on Linux
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
@@ -57,7 +57,7 @@ if( BUILD_BENCHMARK)
         src/benchmark)
     target_link_libraries(${PROJECT_NAME}_Benchmark PRIVATE
         onions::${PROJECT_NAME}
-        google-benchmark::google-benchmark
+        benchmark::benchmark
         Threads::Threads
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
 
