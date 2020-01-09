@@ -8,6 +8,13 @@ add_library(onions::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} INTERFACE src/)
 target_sources(${PROJECT_NAME} INTERFACE
     src/Level_0.hpp)
+# Normally I would make this private, but since this is my own and I am lazy I can do this :)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
+target_compile_options(${PROJECT_NAME} INTERFACE
+     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+          -Wall>
+     $<$<CXX_COMPILER_ID:MSVC>:
+          /W4>)
 
 ######################################################################
 option(BUILD_REFERENCE "Will build a reference implementation as a library, 
