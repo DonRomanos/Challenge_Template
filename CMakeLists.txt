@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(Onions)
+project(Challenge)
 
 add_library(${PROJECT_NAME} INTERFACE)
-add_library(onions::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(Challenge::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} INTERFACE src/)
 target_sources(${PROJECT_NAME} INTERFACE
-    src/Level_0.hpp)
+    src/challenge.hpp)
 # Normally I would make this private, but since this is my own and I am lazy I can do this :)
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 target_compile_options(${PROJECT_NAME} INTERFACE
@@ -22,9 +22,9 @@ option(BUILD_REFERENCE "Will build a reference implementation as a library,
 if(BUILD_REFERENCE)
     add_library(${PROJECT_NAME}_Reference INTERFACE)
     add_library(onions::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
-    target_include_directories(${PROJECT_NAME} INTERFACE src/reference/)
+    target_include_directories(${PROJECT_NAME}_Reference INTERFACE src/)
     target_sources(${PROJECT_NAME}_Reference INTERFACE
-        src/reference/Level_0_Reference.hpp)
+        src/reference.hpp)
     target_compile_definitions(${PROJECT_NAME}_Reference INTERFACE BUILD_REFERENCE) # We will use this for an ifdef
 endif()
 
@@ -34,12 +34,11 @@ if( BUILD_TESTS)
     find_package(gtest REQUIRED)
     add_executable(${PROJECT_NAME}_Tests)
     target_sources(${PROJECT_NAME}_Tests PRIVATE 
-        src/tests/main.cpp
-        src/tests/Level_0_tests.hpp)
+        src/tests.cpp)
     target_include_directories(${PROJECT_NAME}_Tests PRIVATE
-        src/tests)
+        src/)
     target_link_libraries(${PROJECT_NAME}_Tests PRIVATE
-        onions::${PROJECT_NAME}
+        Challenge::${PROJECT_NAME}
         gtest::gtest
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
 
@@ -58,12 +57,11 @@ if( BUILD_BENCHMARK)
 
     add_executable(${PROJECT_NAME}_Benchmark)
     target_sources(${PROJECT_NAME}_Benchmark PRIVATE 
-        src/benchmark/main.cpp
-        src/benchmark/Level_0_benchmark.hpp)
+        src/benchmark.cpp)
     target_include_directories(${PROJECT_NAME}_Benchmark PRIVATE
         src/benchmark)
     target_link_libraries(${PROJECT_NAME}_Benchmark PRIVATE
-        onions::${PROJECT_NAME}
+        Challenge::${PROJECT_NAME}
         benchmark::benchmark
         Threads::Threads
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
