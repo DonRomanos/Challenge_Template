@@ -26,6 +26,12 @@ if(BUILD_REFERENCE)
     target_sources(${PROJECT_NAME}_Reference INTERFACE
         src/reference.hpp)
     target_compile_definitions(${PROJECT_NAME}_Reference INTERFACE BUILD_REFERENCE) # We will use this for an ifdef
+    target_compile_features(${PROJECT_NAME}_Reference INTERFACE cxx_std_20)
+    target_compile_options(${PROJECT_NAME}_Reference INTERFACE
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+            -Wall>
+        $<$<CXX_COMPILER_ID:MSVC>:
+            /W4>)
 endif()
 
 ######################################################################
