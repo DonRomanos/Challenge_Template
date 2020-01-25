@@ -5,7 +5,7 @@ dist: bionic
 compiler:
   - gcc
 before_install:
-  - sudo apt-get -y install ninja
+  - sudo apt-get -y install ninja-build
 install:
 # Install conan
   - pip install conan
