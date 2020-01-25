@@ -1,6 +1,7 @@
 /build/*
 /install/*
-/.vscode/*
 /build*
 CMakeSettings.json
 /.vs/*
+/.vscode/*
+!/.vscode/tasks.json
