@@ -1,5 +1,3 @@
-#pragma once
-
 #include "challenge.hpp"
 #include "reference.hpp"
 

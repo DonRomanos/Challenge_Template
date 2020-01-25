@@ -48,8 +48,8 @@ if( BUILD_TESTS)
         gtest::gtest
         $<$<TARGET_EXISTS:${PROJECT_NAME}_Reference>:${PROJECT_NAME}_Reference>)
 
-    enable_testing()
     include(GoogleTest)
+    enable_testing()
     gtest_discover_tests(${PROJECT_NAME}_Tests)
 endif()
 
