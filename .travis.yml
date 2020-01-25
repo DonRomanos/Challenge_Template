@@ -4,6 +4,8 @@ python: "3.7"
 dist: bionic 
 compiler:
   - gcc
+before_install:
+  - sudo apt-get -y install ninja
 install:
 # Install conan
   - pip install conan
@@ -14,5 +16,5 @@ script:
   - rm -rf build
   - mkdir build
   - cd build
-  - conan install ..
+  - conan install .. -s compiler.version='9' -s compiler.libcxx='libstdc++11' -s compiler.cppstd='20'
   - conan build ..

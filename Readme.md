@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status:](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)
+
 # Challenge Template
 
 This is a basic setup to create some of my programming Challenges. It contains a *CMakeLists.txt* and *conanfile.py* as well as a basic Benchmark and Tests. It sets up and uses the following tools / libraries:
