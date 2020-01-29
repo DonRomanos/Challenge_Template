@@ -7,7 +7,7 @@ add_library(Challenge::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} INTERFACE src/)
 target_sources(${PROJECT_NAME} INTERFACE
-    src/challenge.hpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/challenge.hpp)
 # Normally I would make this private, but since this is my own and I am lazy I can do this :)
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 target_compile_options(${PROJECT_NAME} INTERFACE
@@ -24,7 +24,7 @@ if(BUILD_REFERENCE)
     add_library(onions::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
     target_include_directories(${PROJECT_NAME}_Reference INTERFACE src/)
     target_sources(${PROJECT_NAME}_Reference INTERFACE
-        src/reference.hpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/reference.hpp)
     target_compile_definitions(${PROJECT_NAME}_Reference INTERFACE BUILD_REFERENCE) # We will use this for an ifdef
     target_compile_features(${PROJECT_NAME}_Reference INTERFACE cxx_std_20)
     target_compile_options(${PROJECT_NAME}_Reference INTERFACE
