@@ -1,6 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Build Status:](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)
 [![Build Status Appveyor:(https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)]](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)
+[![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
 
 # Challenge Template
 
