@@ -1,22 +1,23 @@
-version: 1.0.{build}
-    platform: x64
+version: '{build}'
 
-    image: Visual Studio 2019
+platform: x64
 
-    install:
-      - cmd: echo "Downloading conan..."
-      - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
-      - cmd: pip.exe install conan
-      - cmd: pip.exe install conan_package_tools
-      - cmd: conan user # Create the conan data directory
-      - cmd: conan --version
-      - cmd: conan --profile --detect
+image: Visual Studio 2019
 
-    build_script:
-      - cmd: mkdir build && cd build
-      - cmd: conan install .. -b missing
-      - cmd: conan build ..
+install:
+  - cmd: echo "Downloading conan..."
+  - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+  - cmd: pip.exe install conan
+  - cmd: pip.exe install conan_package_tools
+  - cmd: conan user # Create the conan data directory
+  - cmd: conan --version
+  - cmd: conan --profile --detect
 
-    test_script:
-      - cmd: cd build
-      - cmd: ctest
+build_script:
+  - cmd: mkdir build && cd build
+  - cmd: conan install .. -b missing
+  - cmd: conan build ..
+
+test_script:
+  - cmd: cd build
+  - cmd: ctest
