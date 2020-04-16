@@ -15,7 +15,8 @@ install:
   - cmd: pip3.exe install conan_package_tools
   - cmd: conan user # Create the conan data directory
   - cmd: conan --version
-  - cmd: conan --profile --detect
+  - cmd: conan profile new default --detect --force
+  - cmd: conan profile show default
 
 build_script:
   - cmd: mkdir build && cd build
