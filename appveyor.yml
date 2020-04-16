@@ -24,5 +24,4 @@ build_script:
   - cmd: conan build ..
 
 test_script:
-  - cmd: cd build
   - cmd: ctest
