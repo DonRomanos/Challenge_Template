@@ -13,9 +13,16 @@ matrix:
      - <<: *linux
        env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
 
+before_install:
+  - pip install codecov
+
 install:
   - pip install -U conan_package_tools
   - conan user
 
 script:
   - python .travis_build.py
+  - codecov
+
+after_success: 
+  - bash <(curl -s https://codecov.io/bash)

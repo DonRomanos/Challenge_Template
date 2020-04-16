@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Build Status:](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)
-[![Build Status Appveyor:(https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)]](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)
+[![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)
 [![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
 
 # Challenge Template
@@ -109,6 +109,16 @@ My solution was to simply remove the build with old std library.
 ## Packaging and Deployment
 
 **WIP** will be added later.
+
+
+## Code Coverage [WIP]
+
+You can get a free coverage analysis for Open Source projects using [https://codecov.io/](https://codecov.io/). However this requires certain steps to set up. You need coverage reports created by the compiler for this you need to enable certain compiler flags: **--coverage** and linker options: **--coverage**. 
+
+This will generate **.gcno** and **gcda** files after you run your executable. These files can then be used with gcov from command line to create a coverage report.
+
+For convenience there is a tool called **gcovr** from python which will automatically run **gcov**, however to far I have not gotten anything working.
+
 
 ## For the Future
 

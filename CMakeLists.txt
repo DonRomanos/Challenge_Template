@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.12)
 
 project(Challenge)
 
+option(BUILD_TESTS "Will build the tests verifying your result" ON)
+option(BUILD_REFERENCE "Will build a reference implementation as a library, 
+                        which will also be tested and benchmarked. Cool for comparison." ON)
+option(BUILD_BENCHMARK "This will enable the performance tests using google benchmark" ON)
+option(WITH_COVERAGE "Will generate coverage reports for the reference implementation" ON)
+
 add_library(${PROJECT_NAME} INTERFACE)
 add_library(Challenge::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
@@ -20,8 +26,6 @@ target_compile_options(${PROJECT_NAME} INTERFACE
 )
 
 ######################################################################
-option(BUILD_REFERENCE "Will build a reference implementation as a library, 
-                        which will also be tested and benchmarked. Cool for comparison." ON)
 if(BUILD_REFERENCE)
     add_library(${PROJECT_NAME}_Reference INTERFACE)
     add_library(Challenge::${PROJECT_NAME}_Reference ALIAS ${PROJECT_NAME}_Reference)
@@ -41,10 +45,20 @@ if(BUILD_REFERENCE)
         $<$<CXX_COMPILER_ID:MSVC>:
             /WX /W4>
     )
+
+    if( WITH_COVERAGE)
+        target_compile_options(${PROJECT_NAME}_Reference INTERFACE
+            $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+                --coverage>
+        )
+        target_link_options(${PROJECT_NAME}_Reference INTERFACE
+            $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+            --coverage>
+        )
+    endif()
 endif()
 
 ######################################################################
-option(BUILD_TESTS "Will build the tests verifying your result" ON)
 if( BUILD_TESTS)
     find_package(gtest REQUIRED)
 
@@ -67,7 +81,6 @@ if( BUILD_TESTS)
 endif()
 
 ######################################################################
-option(BUILD_BENCHMARK "This will enable the performance tests using google benchmark" ON)
 if( BUILD_BENCHMARK)
     find_package(benchmark REQUIRED)
     # Requires PThreads on Linux
