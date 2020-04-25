@@ -1,4 +1,4 @@
-olinux: &linux
+linux: &linux
    os: linux
    dist: xenial
    language: python
@@ -6,8 +6,8 @@ olinux: &linux
    services:
      - docker
 osx: &osx
-   os: osx
-   language: generic
+  osx_image: xcode11.3
+  env: CXX=clang++ VARIANT=valgrind
 matrix:
    include:
      - <<: *linux
@@ -22,7 +22,7 @@ install:
 
 script:
   - python .travis_build.py
-  - codecov
+  - codecov -t cb7ee84a-0116-4adb-9892-afa9a3db49bf
 
 after_success: 
   - bash <(curl -s https://codecov.io/bash)
