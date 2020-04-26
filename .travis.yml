@@ -9,9 +9,7 @@ linux: &linux
 osx: &osx
   os: osx
   osx_image: xcode11.3
-  env: CXX=clang++
-  language: python
-  python: "3.7"
+  language: shell
   services:
     - docker
 
@@ -24,11 +22,9 @@ matrix:
     - <<: *osx
       env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
-before_install:
-  - pip install conan
-
 install:
-  - pip install -U conan_package_tools
+  - pip3 install --upgrade pip
+  - pip3 install -U conan_package_tools
   - conan user
 
 script:
