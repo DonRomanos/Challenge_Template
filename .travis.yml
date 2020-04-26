@@ -29,6 +29,7 @@ matrix:
       env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
 install:
+  - cmake --version
   - pip3 install --upgrade pip
   - pip3 install -U conan_package_tools
   - conan user
@@ -47,7 +48,7 @@ script:
     ); fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then (
       mkdir build && cd build &&
-      conan install .. -b missing -s compiler=apple-clang -s compiler.cppstd=20 &&
+      conan install .. -b missing &&
       cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD &&
       cmake build .. && ctest .. 
     ); fi
