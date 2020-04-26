@@ -11,12 +11,14 @@ osx: &osx
 matrix:
   include:
     - <<: *linux
+      name: "Linux"
       env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
       language: python
       services:
         - docker
     - <<: *linux
-      env: CXX=g++-9 GCOV=gcov-9 VARIANT=coverage CXXFLAGS="--coverage -O0"
+      name: "Coverage"
+      env: CC=gcc-9 CXX=g++-9 GCOV=gcov-9 VARIANT=coverage CXXFLAGS="--coverage -O0"
       language: python
       addons:
         apt:
@@ -24,8 +26,10 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-9
+            - gcc-9
             - libstdc++-9-dev
     - <<: *osx
+      name: "MacOS"
       env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
 install:
@@ -37,12 +41,12 @@ install:
       CMAKE_VERSION=cmake-3.17.0-Linux-x86_64 &&
       CMAKE_URL="https://cmake.org/files/LatestRelease/${CMAKE_VERSION}.tar.gz" &&
       wget -q ${CMAKE_URL} && tar xf ${CMAKE_VERSION}.tar.gz &&
-      export PATH=${CMAKE_VERSION}/bin:${PATH}
+      export PATH=$TRAVIS_BUILD_DIR/${CMAKE_VERSION}/bin:${PATH}
     ); fi
   - cmake --version
 
 script:
-  - if [ "${VARIANT}" == "coverage" ]; then (
+  - if [ "$TRAVIS_JOB_NAME" == "Coverage" ]; then (
       mkdir build && cd build &&
       conan install .. -b missing -s compiler=gcc -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
       cmake -G "Unix Makefiles" -D CMAKE_MODULE_PATH=$PWD -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -D CMAKE_BUILD_TYPE=DEBUG .. &&
@@ -56,7 +60,7 @@ script:
       cmake -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD .. &&
       cmake --build . && ctest .
     ); fi
-  - if (["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]; then (
+  - if ["$TRAVIS_JOB_NAME" == "Linux"]; then (
       python3 .travis_build.py
     ); fi
 
