@@ -1,7 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build Status:](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)](https://travis-ci.com/DonRomanos/Challenge_Template.svg?branch=master)
-[![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template)
+[![Build Status](https://travis-ci.com/DonRomanos/Challenge_Template.svg?label=linux/osx)](https://travis-ci.com/DonRomanos/Challenge_Template)
+[![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template?svg=true&label=windows)](https://ci.appveyor.com/project/DonRomanos/challenge-template)
 [![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
+[![Try it online](https://img.shields.io/badge/try%20it-online-blue.svg)]("https://godbolt.org/z/ux8sUi")
 
 # Challenge Template
 
@@ -14,7 +15,16 @@ This is a basic setup to create some of my programming Challenges (and actually 
 
 **Note**: By default this uses C++20 because I want to play around with the newest things.
 
-## How to use
+## What you have to change
+
+Change the links on top for the badges, that should actually be about it :)
+
+* Travis
+* Appveyor
+* Codecov
+* Godbolt
+
+## Setup
 
 Requirements:
 
@@ -57,19 +67,19 @@ gtest_DIR
 benchmark_ROOT_DIR
 ```
 
-You can do so via command line
+Alternatively you can set the `CMAKE_MODULE_PATH` to the location where your `Findgtest.cmake` and `Findbenchmark.cmake` files are, if you have them.
+
+Then you can use a command line like this
 
 ```cmake
-cmake -Dgtest_DIR=usr/local/... -Dbenchmark_ROOT_DIR=usr/...
+cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -DCMAKE_BUILD_TYPE=DEBUG -D CMAKE_MODULE_PATH=$PWD
 ```
-
-or via the gui by adding a path entry with the name.
 
 ## Continous Integration
 
-I use [travis](https://travis-ci.com/) as continous integration tool, it is free to use for open source projects. Setup is a little tricky when using conan (there is some lack of documentation) so here is my experience.
+I use [travis](https://travis-ci.com/) as continous integration tool for Linux and OsX, it is free to use for open source projects. Setup is a little tricky when using conan (there is some lack of documentation) so here is my experience.
 
-### Setup
+### Travis Setup
 
 Travis normally integrates quite nicely with github, however the distros they use come with quite outdated compilers and don't run conan by default.
 
@@ -106,19 +116,31 @@ My solution was to simply remove the build with old std library.
         settings["compiler.cppstd"] = "20"
 ```
 
+Travis comes with very old cmake versions, it was tricky for me to install cmake as exporing the path did not work when part of complex bash line. Therefore the different combinations of bash and python scripting.
+
 ## Packaging and Deployment
 
 **WIP** will be added later.
 
-
 ## Code Coverage [WIP]
 
-You can get a free coverage analysis for Open Source projects using [https://codecov.io/](https://codecov.io/). However this requires certain steps to set up. You need coverage reports created by the compiler for this you need to enable certain compiler flags: **--coverage** and linker options: **--coverage**. 
+You can get a free coverage analysis for Open Source projects using [https://codecov.io/](https://codecov.io/). However this requires certain steps to set up. You need coverage reports created by the compiler for this you need to enable certain compiler flags: **--coverage** and linker options: **--coverage**.
 
-This will generate **.gcno** and **gcda** files after you run your executable. These files can then be used with gcov from command line to create a coverage report.
+I use the following command line to do it with CMake:
 
-For convenience there is a tool called **gcovr** from python which will automatically run **gcov**, however to far I have not gotten anything working.
+```shell
+cmake -E env CXXFLAGS="--coverage -O0" cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -DCMAKE_BUILD_TYPE=DEBUG -D CMAKE_MODULE_PATH=$PWD
+```
 
+This will generate **.gcno** and **gcda** files after you run your executable. These files can then be used with gcov from command line to create a coverage report. By default those files will be generated in your CMakeFiles dir, to set the target directory following environment variables can be used `GCOV_PREFIX` simply set them to the directory where you want your **gcda** files (will be created after you run your application for the first time).
+
+For convenience there is a tool called **gcovr** from python which will automatically run **gcov** recursively on available files. An example command line looks like this for me:
+
+```shell
+gcovr -r .. --branches --gcov-executable gcov-9 --html > coverage.html
+```
+
+**Note:**  You have to use the right gcov command fitting to the used compiler, in my case gcc-9 and gcov-9.
 
 ## For the Future
 
