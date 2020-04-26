@@ -40,18 +40,18 @@ script:
   - if [ "${VARIANT}" == "coverage" ]; then (
       mkdir build && cd build &&
       conan install .. -b missing -s compiler=gcc -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
-      cmake -E env CXXFLAGS="--coverage -O0" cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -DCMAKE_BUILD_TYPE=DEBUG -D CMAKE_MODULE_PATH=$PWD &&
+      cmake -E env CXXFLAGS="--coverage -O0" cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -D CMAKE_BUILD_TYPE=DEBUG -D CMAKE_MODULE_PATH=$PWD &&
       cmake build .. && ctest .. &&
       gcovr -r .. --branches --gcov-executable ${GCOV} --html > coverage.html
       bash <(curl -s https://codecov.io/bash) -x "${GCOV}"
     ); fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then (
       mkdir build && cd build &&
-      conan install .. -b missing -s compiler=clang -s compiler.version=11 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
+      conan install .. -b missing -s compiler=apple-clang -s compiler.version=11 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
       cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD &&
       cmake build .. && ctest .. 
     ); fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then (
+  - if(["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]); then (
       python3 .travis_build.py
     ); fi
 
