@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/DonRomanos/Challenge_Template.svg?label=linux/osx)](https://travis-ci.com/DonRomanos/Challenge_Template)
 [![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template?svg=true&label=windows)](https://ci.appveyor.com/project/DonRomanos/challenge-template)
 [![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
-[![Try it online]("https://godbolt.org/z/ux8sUi")](https://img.shields.io/badge/try%20it-online-blue.svg)
+[![Try it online](https://img.shields.io/badge/try%20it-online-blue.svg)]("https://godbolt.org/z/ux8sUi")
 
 # Challenge Template
 
