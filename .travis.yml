@@ -56,7 +56,7 @@ script:
       cmake -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD .. &&
       cmake --build . && ctest .
     ); fi
-  - if(["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]); then (
+  - if (["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]; then (
       python3 .travis_build.py
     ); fi
 

@@ -75,6 +75,13 @@ if( BUILD_TESTS)
         gtest::gtest
         $<$<TARGET_EXISTS:Challenge::${PROJECT_NAME}_Reference>:Challenge::${PROJECT_NAME}_Reference>)
 
+    target_compile_options(${PROJECT_NAME}_Tests INTERFACE
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+            -Wno-gnu-zero-variadic-macro-arguments>
+        $<$<CXX_COMPILER_ID:MSVC>:
+            /WX /W4>
+    )
+
     include(GoogleTest)
     enable_testing()
     gtest_discover_tests(${PROJECT_NAME}_Tests)
