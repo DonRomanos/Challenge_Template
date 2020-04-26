@@ -45,7 +45,6 @@ before_install:
 install:
   - pip3 install --upgrade pip
   - pip3 install -U conan_package_tools
-  - pip3 install gcovr
   - conan user
   - cmake --version
 

@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.com/DonRomanos/Challenge_Template.svg?label=linux/osx)](https://travis-ci.com/DonRomanos/Challenge_Template)
 [![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template?svg=true&label=windows)](https://ci.appveyor.com/project/DonRomanos/challenge-template)
 [![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
+[![Try it online]("https://godbolt.org/z/ux8sUi")](https://img.shields.io/badge/try%20it-online-blue.svg)
 
 # Challenge Template
 
@@ -13,6 +14,15 @@ This is a basic setup to create some of my programming Challenges (and actually 
 * Google Microbenchmark
 
 **Note**: By default this uses C++20 because I want to play around with the newest things.
+
+## What you have to change
+
+Change the links on top for the badges, that should actually be about it :)
+
+* Travis
+* Appveyor
+* Codecov
+* Godbolt
 
 ## Setup
 
@@ -105,6 +115,8 @@ My solution was to simply remove the build with old std library.
     for settings, options, env_vars, build_requires, reference in builder.items:
         settings["compiler.cppstd"] = "20"
 ```
+
+Travis comes with very old cmake versions, it was tricky for me to install cmake as exporing the path did not work when part of complex bash line. Therefore the different combinations of bash and python scripting.
 
 ## Packaging and Deployment
 
