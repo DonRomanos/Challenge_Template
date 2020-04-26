@@ -34,10 +34,10 @@ install:
   - conan user
   - if [ "${VARIANT}" == "coverage" ]; then (
       pip3 install gcovr &&
-      CMAKE_URL="https://cmake.org/files/LatestRelease/cmake-3.17.0-Linux-x86_64.tar.gz" &&
-      mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake &&
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH} &&
-      ${DEPS_DIR}/cmake/bin/cmake --version
+      CMAKE_VERSION=cmake-3.17.0-Linux-x86_64 &&
+      CMAKE_URL="https://cmake.org/files/LatestRelease/${CMAKE_VERSION}.tar.gz" &&
+      wget -q ${CMAKE_URL} && tar xf ${CMAKE_VERSION}.tar.gz &&
+      export PATH=${CMAKE_VERSION}/bin:${PATH}
     ); fi
   - cmake --version
 
@@ -46,7 +46,7 @@ script:
       mkdir build && cd build &&
       conan install .. -b missing -s compiler=gcc -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
       cmake -G "Unix Makefiles" -D CMAKE_MODULE_PATH=$PWD -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -D CMAKE_BUILD_TYPE=DEBUG .. &&
-      cmake build .. && ctest .. &&
+      cmake --build . && ctest . &&
       gcovr -r .. --branches --gcov-executable ${GCOV} --html > coverage.html
       bash <(curl -s https://codecov.io/bash) -x "${GCOV}"
     ); fi
@@ -54,7 +54,7 @@ script:
       mkdir build && cd build &&
       conan install .. -b missing &&
       cmake -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD .. &&
-      cmake --build .. 
+      cmake --build . && ctest .
     ); fi
   - if(["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]); then (
       python3 .travis_build.py
