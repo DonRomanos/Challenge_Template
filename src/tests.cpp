@@ -1,7 +1,10 @@
 #include "challenge.hpp"
 #include "reference.hpp"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments" // Caused by typed test variadic macro
 #include "gtest/gtest.h"
+#pragma clang diagnostic pop
 
 template <typename T>
 class Some_typed_Test : public ::testing::Test
