@@ -1,20 +1,30 @@
 linux: &linux
-   os: linux
-   dist: xenial
-   language: python
-   python: "3.7"
-   services:
-     - docker
+  os: linux
+  dist: xenial
+  language: python
+  python: "3.7"
+  services:
+    - docker
+
 osx: &osx
   osx_image: xcode11.3
-  env: CXX=clang++ VARIANT=valgrind
+  env: CXX=clang++
+  language: python
+  python: "3.7"
+  services:
+    - docker
+
 matrix:
-   include:
-     - <<: *linux
-       env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+  include:
+    - <<: *linux
+      env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+    - <<: *linux
+      env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9 VARIANT=coverage
+    - <<: *osx
+      env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
 before_install:
-  - pip install codecov
+  - pip install conan
 
 install:
   - pip install -U conan_package_tools
@@ -22,7 +32,3 @@ install:
 
 script:
   - python .travis_build.py
-  - codecov -t cb7ee84a-0116-4adb-9892-afa9a3db49bf
-
-after_success: 
-  - bash <(curl -s https://codecov.io/bash)

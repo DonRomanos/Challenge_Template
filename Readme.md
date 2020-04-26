@@ -67,7 +67,7 @@ cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++
 
 ## Continous Integration
 
-I use [travis](https://travis-ci.com/) as continous integration tool, it is free to use for open source projects. Setup is a little tricky when using conan (there is some lack of documentation) so here is my experience.
+I use [travis](https://travis-ci.com/) as continous integration tool for Linux and OsX, it is free to use for open source projects. Setup is a little tricky when using conan (there is some lack of documentation) so here is my experience.
 
 ### Travis Setup
 
