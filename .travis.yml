@@ -36,7 +36,8 @@ install:
       pip3 install gcovr &&
       CMAKE_URL="https://cmake.org/files/LatestRelease/cmake-3.17.0-Linux-x86_64.tar.gz" &&
       mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake &&
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+      export PATH=${DEPS_DIR}/cmake/bin:${PATH} &&
+      ${DEPS_DIR}/cmake/bin/cmake --version
     ); fi
   - cmake --version
 
@@ -53,7 +54,7 @@ script:
       mkdir build && cd build &&
       conan install .. -b missing &&
       cmake -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD .. &&
-      cmake build .. && ctest .. 
+      cmake --build .. 
     ); fi
   - if(["$TRAVIS_OS_NAME" == "linux"] && [${VARIANT} != "coverage"]); then (
       python3 .travis_build.py
