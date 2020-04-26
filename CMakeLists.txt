@@ -20,7 +20,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 target_compile_options(${PROJECT_NAME} INTERFACE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-        -Wall -Werror -pedantic-errors -Wextra -Wconversion -Wsign-conversion>
+        -Wall -Werror -pedantic-errors -Wextra -Wconversion -Wsign-conversion -Wno-gnu-zero-variadic-macro-arguments>
     $<$<CXX_COMPILER_ID:MSVC>:
         /WX /W4>
 )
@@ -41,7 +41,7 @@ if(BUILD_REFERENCE)
 
     target_compile_options(${PROJECT_NAME}_Reference INTERFACE
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-            -Wall -Werror -pedantic-errors -Wextra -Wconversion -Wsign-conversion>
+            -Wall -Werror -pedantic-errors -Wextra -Wconversion -Wsign-conversion -Wno-gnu-zero-variadic-macro-arguments>
         $<$<CXX_COMPILER_ID:MSVC>:
             /WX /W4>
     )
@@ -75,11 +75,9 @@ if( BUILD_TESTS)
         gtest::gtest
         $<$<TARGET_EXISTS:Challenge::${PROJECT_NAME}_Reference>:Challenge::${PROJECT_NAME}_Reference>)
 
-    target_compile_options(${PROJECT_NAME}_Tests INTERFACE
-        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+    target_compile_options(${PROJECT_NAME}_Tests PRIVATE
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
             -Wno-gnu-zero-variadic-macro-arguments>
-        $<$<CXX_COMPILER_ID:MSVC>:
-            /WX /W4>
     )
 
     include(GoogleTest)
