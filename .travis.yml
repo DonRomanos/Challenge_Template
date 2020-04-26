@@ -33,9 +33,9 @@ matrix:
       env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
 before_install:
+  - mkdir $HOME/usr
+  - export PATH="$HOME/usr/bin:$PATH"
   - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then (
-    mkdir $HOME/usr &&
-    export PATH="$HOME/usr/bin:$PATH" &&
     wget https://cmake.org/files/LatestRelease/cmake-3.17.0-Linux-x86_64.sh &&
     chmod +x cmake-3.17.0-Linux-x86_64.sh &&
     ./cmake-3.17.0-Linux-x86_64.sh --prefix=$HOME/usr --exclude-subdir --skip-license
