@@ -1,24 +1,29 @@
 linux: &linux
   os: linux
   dist: xenial
-  language: python
-  python: "3.7"
-  services:
-    - docker
 
 osx: &osx
   os: osx
   osx_image: xcode11.3
   language: shell
-  services:
-    - docker
 
 matrix:
   include:
     - <<: *linux
       env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+      language: python
+      python: "3.7"
+      services:
+        - docker
     - <<: *linux
-      env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9 VARIANT=coverage
+      env: CXX=g++-9 GCOV=gcov-9 VARIANT=coverage
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+            - libstdc++-9-dev
     - <<: *osx
       env: CONAN_CLANG_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/clang9
 
@@ -26,6 +31,30 @@ install:
   - pip3 install --upgrade pip
   - pip3 install -U conan_package_tools
   - conan user
+  - if [ "${VARIANT}" == "coverage" ]; then (
+      pip3 install gcovr
+    ); fi
 
 script:
-  - python .travis_build.py
+  - if [ "${VARIANT}" == "coverage" ]; then (
+      mkdir build && cd build &&
+      conan install .. -b missing -s compiler=gcc -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
+      cmake -E env CXXFLAGS="--coverage -O0" cmake .. -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-9 -D CMAKE_CXX_COMPILER=g++-9 -DCMAKE_BUILD_TYPE=DEBUG -D CMAKE_MODULE_PATH=$PWD &&
+      cmake build .. && ctest .. &&
+      gcovr -r .. --branches --gcov-executable ${GCOV} --html > coverage.html
+      bash <(curl -s https://codecov.io/bash) -x "${GCOV}"
+    ); fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then (
+      mkdir build && cd build &&
+      conan install .. -b missing -s compiler=clang -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
+      cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD &&
+      cmake build .. && ctest .. 
+    ); fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then (
+      python3 .travis_build.py
+    ); fi
+
+notifications:
+  on_success: change
+  on_failure: always
+  on_start: false
