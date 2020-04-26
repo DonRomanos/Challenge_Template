@@ -1,6 +1,7 @@
 linux: &linux
   os: linux
   dist: xenial
+  python: "3.7"
 
 osx: &osx
   os: osx
@@ -12,11 +13,11 @@ matrix:
     - <<: *linux
       env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
       language: python
-      python: "3.7"
       services:
         - docker
     - <<: *linux
       env: CXX=g++-9 GCOV=gcov-9 VARIANT=coverage
+      language: python
       addons:
         apt:
           sources:
@@ -46,7 +47,7 @@ script:
     ); fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then (
       mkdir build && cd build &&
-      conan install .. -b missing -s compiler=clang -s compiler.version=9 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
+      conan install .. -b missing -s compiler=clang -s compiler.version=11 -s compiler.libcxx=libstdc++11 -s compiler.cppstd=20 &&
       cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RELEASE -D CMAKE_MODULE_PATH=$PWD &&
       cmake build .. && ctest .. 
     ); fi
