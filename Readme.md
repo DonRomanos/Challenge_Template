@@ -1,8 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/DonRomanos/Challenge_Template.svg?label=linux/osx)](https://travis-ci.com/DonRomanos/Challenge_Template)
-[![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template?svg=true&label=windows)](https://ci.appveyor.com/project/DonRomanos/challenge-template)
+<a href="https://travis-ci.com/DonRomanos/Challenge_Template">![Build Status:](https://travis-ci.com/DonRomanos/Challenge_Template.svg?label=linux/osx)</a>
+<a href="https://ci.appveyor.com/project/DonRomanos/challenge-template" target="_blank">![Build Status:](https://ci.appveyor.com/api/projects/status/github/donromanos/challenge_template?svg=true&label=windows)</a>
 [![codecov](https://codecov.io/gh/donromanos/Challenge_Template/branch/master/graph/badge.svg)](https://codecov.io/gh/donromanos/Challenge_Template/)
-[![Try it online](https://img.shields.io/badge/try%20it-online-blue.svg)]("https://godbolt.org/z/ux8sUi")
+<a href="https://godbolt.org/z/ux8sUi">![Try it online](https://img.shields.io/badge/try%20it-online-blue.svg)</a>
 
 # Challenge Template
 
