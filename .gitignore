@@ -1,6 +1,7 @@
 /build/*
 /install/*
 /build*
+/out/*
 !build.py
 CMakeSettings.json
 /.vs/*
