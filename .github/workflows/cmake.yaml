@@ -8,7 +8,7 @@ on:
     - master
 jobs:
   build:
-    name: ${{ matrix.config.name }} ${{ matrix.build_type }} [downcast=${{ matrix.downcast_mode }}]
+    name: ${{ matrix.config.name }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
@@ -18,7 +18,7 @@ jobs:
             name: "Windows MSVC 2019",
             os: windows-latest,
             compiler: { type: VISUAL, version: 16, cc: "cl", cxx: "cl" },
-            generator: "Visual Studio 16 2019"
+            generator: "'Visual Studio 16 2019'"
           }
         - {
             name: "Ubuntu GCC 10.3.0",
@@ -35,7 +35,6 @@ jobs:
             generator: "Ninja"
           }
         build_type: [ "Release", "Debug" ]
-        downcast_mode: [ "on", "auto" ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Clang
@@ -58,8 +57,14 @@ jobs:
       - name: Install Conan
         run: |
           pip install -U conan
+      - name: Install Ninja
+        shell: bash
+        run: |
+          if [ $RUNNER_OS == 'Linux' ]; then
+            sudo apt install -y ninja-build
+          fi
       - name: Configure CMake
-        run: cmake -G ${{matrix.config.generator}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_COMPILER=${{matrix.compiler.cc}} -DCMAKE_CXX_COMPILER=${{matrix.compiler.cxx}}
+        run: cmake -G ${{matrix.config.generator}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_COMPILER=${{matrix.config.compiler.cc}} -DCMAKE_CXX_COMPILER=${{matrix.compiler.config.cxx}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
