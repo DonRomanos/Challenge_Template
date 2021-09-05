@@ -64,7 +64,7 @@ jobs:
             sudo apt install -y ninja-build
           fi
       - name: Configure CMake
-        run: cmake -G ${{matrix.config.generator}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_COMPILER=${{matrix.config.compiler.cc}} -DCMAKE_CXX_COMPILER=${{matrix.compiler.config.cxx}}
+        run: cmake -G ${{matrix.config.generator}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_COMPILER=${{matrix.config.compiler.cc}} -DCMAKE_CXX_COMPILER=${{matrix.config.compiler.cxx}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
