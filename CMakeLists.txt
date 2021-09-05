@@ -69,7 +69,7 @@ endif()
 
 ######################################################################
 if( BUILD_TESTS)
-    find_package(gtest REQUIRED)
+    find_package(GTest REQUIRED)
 
     add_executable(${PROJECT_NAME}_Tests)
     
