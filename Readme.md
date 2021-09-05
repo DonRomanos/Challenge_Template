@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![build status](https://github.com/DonRomanos/Challenge_Template/actions/workflows/build/badge.svg)
+[![CMake](https://github.com/DonRomanos/Challenge_Template/actions/workflows/build.yaml/badge.svg?branch=master)](https://github.com/DonRomanos/Challenge_Template/actions/workflows/build.yaml)
 <a href="https://godbolt.org/z/ux8sUi">![Try it online](https://img.shields.io/badge/try%20it-online-blue.svg)</a>
 
 # Challenge Template
