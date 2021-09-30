@@ -20,7 +20,7 @@ conan_cmake_configure(REQUIRES gtest/[1.11] benchmark/[>1.4]
 conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
-                    REMOTE conan-center
+                    REMOTE conancenter 
                     SETTINGS ${settings})
 
 option(BUILD_TESTS "Will build the tests verifying your result" ON)
